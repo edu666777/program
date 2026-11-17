@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1e7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>O que é programação?</title>
+<meta name="description" content="Toque, mexa e veja HTML, CSS e Python funcionando.">
+<meta property="og:title" content="O que é programação?">
+<meta property="og:description" content="Toque, mexa e veja HTML, CSS e Python funcionando.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+<style>
+  :root{
+    --papel:#f6f1e7; --papel2:#efe7d6; --tinta:#1d1b17; --cinza:#6b6458;
+    --html:#e4572e; --css:#2563eb; --py:#16a34a; --amarelo:#ffd23f;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --mono:"Cascadia Code","SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:"Segoe UI Variable Text","Avenir Next","Trebuchet MS",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  html,body{overflow-x:hidden}
+  body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:17px;line-height:1.55;
+    background-image:repeating-linear-gradient(transparent 0 31px,rgba(0,0,0,.045) 31px 32px)}
+  main{max-width:640px;margin:0 auto;
+    padding:0 max(16px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+  button,a{touch-action:manipulation}
+  code{font-family:var(--mono);font-size:.9em;background:var(--papel2);padding:1px 5px;border-radius:5px}
+
+  /* ---------- menu fixo ---------- */
+  .menu{position:fixed;top:0;left:0;right:0;z-index:10;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
+    background:rgba(246,241,231,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border-bottom:1.5px solid var(--tinta);display:flex;gap:6px;transform:translateY(-110%);transition:transform .3s}
+  .menu.on{transform:none}
+  .menu a{flex:1;text-decoration:none;font:700 14px var(--mono);border-radius:10px;border:1.5px solid var(--tinta);
+    background:#fffdf8;min-height:44px;display:grid;place-items:center}
+  .menu a.ativo{color:#fff}
+  .menu a.ativo[href="#html"]{background:var(--html)}.menu a.ativo[href="#css"]{background:var(--css)}
+  .menu a.ativo[href="#python"]{background:var(--py)}.menu a.ativo[href="#suavez"]{background:var(--tinta)}
+
+  /* ---------- topo ---------- */
+  header.hero{padding:48px 0 10px}
+  .selo{display:inline-block;font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--tinta);
+    padding:4px 10px;border-radius:99px;transform:rotate(-2deg)}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(42px,12vw,72px);line-height:.98;margin:18px 0 14px;letter-spacing:-.02em}
+  h1 .marca{background:linear-gradient(transparent 58%,var(--amarelo) 58% 92%,transparent 92%)}
+  .lead{font-size:18px;color:#3a362f;margin:0}
+  .analogia{margin:24px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .analogia a{text-decoration:none;background:#fffdf8;border:1.5px solid var(--tinta);border-radius:14px;padding:12px 6px;
+    text-align:center;font-size:13.5px;box-shadow:3px 3px 0 var(--tinta);transition:transform .12s,box-shadow .12s}
+  .analogia a:active{transform:translate(3px,3px);box-shadow:none}
+  .analogia b{display:block;font-size:28px;line-height:1.15}
+  .analogia span{display:block;font:700 13px var(--mono);margin:2px 0}
+  .toque{margin:18px 0 0;font-size:15px;color:var(--cinza)}
+  .toque b{display:inline-block;animation:aceno 1.4s ease-in-out infinite}
+  @keyframes aceno{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+  /* ---------- seções ---------- */
+  section{margin-top:52px;scroll-margin-top:76px}
+  .num{font:13px var(--mono);color:var(--cinza)}
+  h2{font-family:var(--serif);font-size:clamp(30px,8.5vw,44px);line-height:1.04;margin:6px 0 10px;letter-spacing:-.01em}
+  h2 em{font-style:normal;padding:0 6px;border-radius:6px;color:#fff}
+  #html h2 em{background:var(--html)} #css h2 em{background:var(--css)} #python h2 em{background:var(--py)}
+  p.sub{margin:0 0 16px;color:#3a362f}
+  h3.mini{font:700 13px var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:28px 0 10px;color:var(--cinza)}
+
+  .card{background:#fffdf8;border:1.5px solid var(--tinta);border-radius:18px;box-shadow:5px 5px 0 var(--tinta);overflow:hidden}
+  .card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 14px;border-bottom:1.5px solid var(--tinta);
+    font:12px var(--mono);background:var(--papel2)}
+  .dots i{display:inline-block;width:9px;height:9px;border-radius:50%;border:1.2px solid var(--tinta);margin-right:4px}
+  .dots i:nth-child(1){background:#ff6b5b}.dots i:nth-child(2){background:var(--amarelo)}.dots i:nth-child(3){background:#43c463}
+
+  pre.code{margin:0;padding:14px;font:13px/1.6 var(--mono);background:#1f1d1a;color:#f3ecdd;white-space:pre-wrap;word-break:break-word}
+  pre.code.limite{max-height:260px;overflow-y:auto}
+  .tag{color:#ff8a65}.attr{color:#ffd54f}.str{color:#a5d6a7}.com{color:#8b8579;font-style:italic}
+  .prop{color:#90caf9}.kw{color:#ce93d8}.fn{color:#80deea}.num-c{color:#ffcc80}.sel{color:#ff8a65}
+
+  .btn{appearance:none;font:700 16px var(--sans);border:1.5px solid var(--tinta);border-radius:12px;padding:11px 16px;min-height:48px;
+    background:var(--amarelo);color:var(--tinta);box-shadow:3px 3px 0 var(--tinta);cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .btn:active{transform:translate(3px,3px);box-shadow:none}
+  .btn.ghost{background:#fffdf8}
+  .row{display:flex;gap:10px;padding:12px 14px}
+  .row .btn{flex:1}
+  .nota{font-size:14px;color:var(--cinza);margin:10px 2px 0}
+
+  /* chips (peças, temas, animações) */
+  .chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 14px}
+  .chip{font:600 14px var(--sans);border:1.5px solid var(--tinta);background:#fffdf8;border-radius:12px;padding:8px 4px;min-height:48px;
+    cursor:pointer;line-height:1.15;transition:transform .1s,background .2s}
+  .chip small{display:block;font:11px var(--mono);color:var(--cinza);margin-top:2px}
+  .chip:active{transform:scale(.94)}
+  .chip.on{background:var(--tinta);color:#fff}.chip.on small{color:#cfc6b4}
+  .rolar{display:flex;gap:8px;overflow-x:auto;padding:12px 14px;scrollbar-width:none}
+  .rolar::-webkit-scrollbar{display:none}
+  .rolar .chip{flex:0 0 auto;padding:8px 14px}
+
+  /* janelas de resultado */
+  .tela{width:100%;border:0;display:block;background:#fff}
+  .barra-tela{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font:12px var(--mono);
+    background:var(--papel2);border-top:1.5px solid var(--tinta);border-bottom:1.5px solid var(--tinta)}
+  .interruptor{display:flex;align-items:center;gap:8px;font:600 14px var(--sans);cursor:pointer;user-select:none}
+  .interruptor input{appearance:none;width:46px;height:28px;border-radius:99px;background:#cfc6b4;border:1.5px solid var(--tinta);
+    position:relative;margin:0;transition:background .2s;cursor:pointer}
+  .interruptor input::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:1.5px solid var(--tinta);transition:transform .2s}
+  .interruptor input:checked{background:var(--css)}
+  .interruptor input:checked::after{transform:translateX(18px)}
+
+  /* CSS: brinquedo de botão */
+  .preview-css{min-height:160px;display:grid;place-items:center;padding:24px;
+    background:radial-gradient(circle at 1px 1px,rgba(0,0,0,.12) 1px,transparent 0) 0 0/14px 14px}
+  #botaoCss{border:none;font-weight:800;cursor:pointer;transition:all .25s;font-family:var(--sans)}
+  .controles{padding:14px;display:grid;gap:12px;border-top:1.5px solid var(--tinta)}
+  .controle label{display:flex;justify-content:space-between;font-size:14px;font-weight:600}
+  .controle label code{background:none;color:var(--css)}
+  input[type=range]{width:100%;height:36px;accent-color:var(--css)}
+  .cores{display:flex;justify-content:space-between;margin-top:6px}
+  .cores button{width:42px;height:42px;border-radius:50%;border:2px solid var(--tinta);cursor:pointer}
+  .cores button.on{outline:3px solid var(--amarelo);outline-offset:2px}
+
+  /* CSS: animação */
+  .pista{height:170px;display:grid;place-items:center;overflow:hidden;
+    background:radial-gradient(circle at 1px 1px,rgba(0,0,0,.12) 1px,transparent 0) 0 0/14px 14px}
+  #astro{width:88px;height:88px;border-radius:24px;display:grid;place-items:center;font-size:48px;background:#ff6b5b;border:2px solid var(--tinta)}
+
+  /* Python */
+  .entrada{padding:4px 14px 0;display:grid;gap:10px}
+  .entrada label{font-size:14px;font-weight:600;display:block}
+  .entrada input{width:100%;margin-top:4px;font:16px var(--mono);padding:10px 12px;border:1.5px solid var(--tinta);border-radius:10px;background:#fff}
+  .escolhas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .escolhas button{font-size:30px;min-height:64px;border:1.5px solid var(--tinta);border-radius:14px;background:#fff;box-shadow:3px 3px 0 var(--tinta);cursor:pointer}
+  .escolhas button small{display:block;font:600 12px var(--sans)}
+  .escolhas button:active{transform:translate(3px,3px);box-shadow:none}
+  .terminal{background:#0f1a12;color:#b9f6ca;font:13.5px/1.55 var(--mono);padding:14px 16px;min-height:120px;white-space:pre-wrap;word-break:break-word;
+    border-top:1.5px solid var(--tinta)}
+  .terminal .prompt{color:#5f8f6b}
+  .terminal .erro{color:#ff8a80}
+  .cursor{display:inline-block;width:8px;height:16px;background:#b9f6ca;vertical-align:-3px;animation:pisca 1s steps(1) infinite}
+  @keyframes pisca{50%{opacity:0}}
+
+  /* Sua vez */
+  textarea{width:100%;min-height:220px;border:0;resize:vertical;font:16px/1.5 var(--mono);padding:14px;background:#1f1d1a;color:#f3ecdd;outline:none;display:block}
+  .dica{font-size:13px;color:var(--cinza);padding:8px 14px;background:var(--papel2);border-bottom:1.5px solid var(--tinta)}
+
+  .resumo{margin-top:52px;padding:22px;border:1.5px dashed var(--tinta);border-radius:18px;background:#fffdf8}
+  .resumo h2{font-size:30px}
+  .resumo ul{padding-left:20px;margin:0}
+  .resumo li{margin:6px 0}
+  .contador{margin-top:14px;font:600 15px var(--mono);background:var(--amarelo);border:1.5px solid var(--tinta);border-radius:12px;padding:10px 12px}
+  footer{text-align:center;font-size:13px;color:var(--cinza);margin-top:32px}
+
+  .surge{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .surge.visivel{opacity:1;transform:none}
+  @media (max-width:360px){body{font-size:16px}.chip{font-size:13px}.analogia a{font-size:12px}}
+  @media (prefers-reduced-motion:reduce){.surge{opacity:1;transform:none}*{transition:none!important;animation:none!important}}
+  @media print{.menu,.btn,.chips,.rolar,.controles,.row{display:none!important}.surge{opacity:1;transform:none}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<nav class="menu" id="menu" aria-label="Seções">
+  <a href="#html">HTML</a><a href="#css">CSS</a><a href="#python">Python</a><a href="#suavez">✍️</a>
+</nav>
+<main>
+
+  <header class="hero surge">
+    <span class="selo">✏️ aula rápida de bolso</span>
+    <h1>Isso aqui é <span class="marca">programação.</span></h1>
+    <p class="lead">Esta página que está no seu celular foi escrita com código. Bora abrir a caixa e ver como funciona por dentro.</p>
+    <nav class="analogia">
+      <a href="#html"><b>🦴</b><span style="color:var(--html)">HTML</span>o esqueleto</a>
+      <a href="#css"><b>👕</b><span style="color:var(--css)">CSS</span>a roupa</a>
+      <a href="#python"><b>🧠</b><span style="color:var(--py)">Python</span>o cérebro</a>
+    </nav>
+    <p class="toque"><b>👆</b> Tudo aqui é de tocar e mexer.</p>
+  </header>
+
+  <!-- ================= HTML ================= -->
+  <section id="html" class="surge">
+    <div class="num">01 / 04</div>
+    <h2><em>HTML</em> diz o que existe na tela</h2>
+    <p class="sub">Cada coisa na tela é uma "peça" com uma etiqueta entre <code>&lt; &gt;</code>. Toque nas peças abaixo para montar uma página e veja o código aparecer.</p>
+
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span id="infoHtml">minha-pagina.html</span></div>
+      <iframe class="tela" id="telaHtml" style="height:270px" title="Página montada" sandbox="allow-scripts allow-modals allow-popups"></iframe>
+      <div class="barra-tela">
+        <span>👆 dá pra tocar em tudo</span>
+        <label class="interruptor"><input type="checkbox" id="vestirHtml"> CSS</label>
+      </div>
+      <div class="chips" id="pecas"></div>
+      <div class="row" style="padding-top:0">
+        <button class="btn ghost" id="desfazer">↶ Desfazer</button>
+        <button class="btn ghost" id="limpar">🗑 Limpar</button>
+      </div>
+      <pre class="code limite" id="codigoHtml"></pre>
+    </div>
+    <p class="nota">Repare: com <b>uma linha</b> de HTML (<code>&lt;input type="date"&gt;</code>) o celular abre o calendário dele sozinho. Liga o <b>CSS</b> para ver a mesma página com roupa.</p>
+  </section>
+
+  <!-- ================= CSS ================= -->
+  <section id="css" class="surge">
+    <div class="num">02 / 04</div>
+    <h2><em>CSS</em> diz como as coisas parecem</h2>
+    <p class="sub">O conteúdo fica igual. Só muda a roupa. E o CSS que aparece embaixo é exatamente o que está sendo usado.</p>
+
+    <h3 class="mini">① Mesmo HTML, cinco roupas</h3>
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span>tema.css</span></div>
+      <iframe class="tela" id="telaTema" style="height:250px" title="Cartão com tema" sandbox="allow-scripts"></iframe>
+      <div class="rolar" id="temas"></div>
+      <pre class="code limite" id="codigoTema"></pre>
+    </div>
+
+    <h3 class="mini">② Mexa e veja o código mudar</h3>
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span>botao.css</span></div>
+      <div class="preview-css"><button id="botaoCss">Me toca!</button></div>
+      <pre class="code" id="codigoCss"></pre>
+      <div class="controles">
+        <div class="controle"><label>Cor <code>background</code></label><div class="cores" id="cores"></div></div>
+        <div class="controle"><label for="tam">Tamanho da letra <code id="vTam">20px</code></label><input type="range" id="tam" min="12" max="36" value="20"></div>
+        <div class="controle"><label for="raio">Arredondar cantos <code id="vRaio">12px</code></label><input type="range" id="raio" min="0" max="40" value="12"></div>
+        <div class="controle"><label for="sombra">Sombra <code id="vSombra">6px</code></label><input type="range" id="sombra" min="0" max="16" value="6"></div>
+        <div class="controle"><label for="giro">Girar <code id="vGiro">0deg</code></label><input type="range" id="giro" min="-30" max="30" value="0"></div>
+      </div>
+    </div>
+
+    <h3 class="mini">③ CSS também faz animação</h3>
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span>animacao.css</span></div>
+      <div class="pista"><div id="astro">🚀</div></div>
+      <div class="chips" id="anims"></div>
+      <pre class="code" id="codigoAnim"></pre>
+    </div>
+    <style id="estiloAnim"></style>
+  </section>
+
+  <!-- ================= PYTHON ================= -->
+  <section id="python" class="surge">
+    <div class="num">03 / 04</div>
+    <h2><em>Python</em> pensa e decide</h2>
+    <p class="sub">HTML e CSS montam a tela. Uma linguagem de programação faz contas, toma decisões e repete coisas. Deslize os exemplos, escolha um e rode.</p>
+
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span id="nomeArquivo">ola.py</span></div>
+      <div class="rolar" id="abas"></div>
+      <div class="entrada" id="entrada"></div>
+      <div class="row" id="linhaRodar"><button class="btn" id="rodar" style="background:var(--py);color:#fff">▶ Rodar</button></div>
+      <div class="terminal" id="terminal"><span class="prompt">$ </span><span class="cursor"></span></div>
+      <pre class="code" id="codigoPy"></pre>
+    </div>
+    <p class="nota">Detalhe honesto: o navegador não roda Python sozinho, então aqui o JavaScript faz o papel do Python, seguindo as mesmas regras. No computador, o mesmo código roda de verdade com <code>python arquivo.py</code>. A calculadora do amor, por exemplo, dá exatamente o mesmo número.</p>
+  </section>
+
+  <!-- ================= SUA VEZ ================= -->
+  <section id="suavez" class="surge">
+    <div class="num">04 / 04</div>
+    <h2>Agora é sua vez ✍️</h2>
+    <p class="sub">Troque um texto ou uma cor no código. A tela de cima muda na hora.</p>
+    <div class="card">
+      <div class="card-head"><span class="dots"><i></i><i></i><i></i></span><span>meu-site.html</span></div>
+      <iframe class="tela" id="saida" style="height:200px;border-bottom:1.5px solid var(--tinta)" title="Resultado do seu código" sandbox="allow-scripts allow-modals"></iframe>
+      <div class="dica">👇 Toque no código e troque <b>Oi, mundo!</b> ou a cor <b>#e4572e</b></div>
+      <textarea id="editor" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off"></textarea>
+      <div class="row"><button class="btn ghost" id="resetar">↺ Voltar ao original</button></div>
+    </div>
+  </section>
+
+  <div class="resumo surge">
+    <h2>Resumindo</h2>
+    <ul>
+      <li><b style="color:var(--html)">HTML</b>: o que aparece (título, texto, botão).</li>
+      <li><b style="color:var(--css)">CSS</b>: como aparece (cor, tamanho, animação).</li>
+      <li><b style="color:var(--py)">Python</b>: o que acontece (contas, decisões, repetições).</li>
+      <li>Programar é escrever instruções bem claras para o computador seguir.</li>
+    </ul>
+    <div class="contador" id="contador">Esta página tem … linhas de código.</div>
+  </div>
+
+  <footer>Feito com HTML, CSS e JavaScript · publicado no GitHub Pages</footer>
+</main>
+
+<script>
+/* ================= utilidades ================= */
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const vibrar = () => navigator.vibrate && navigator.vibrate(12);
+const VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+
+function corHTML(s){
+  return esc(s).replace(/(&lt;!--[\s\S]*?--&gt;)|&lt;(\/?)([a-z0-9]+)|(&gt;)|([a-z-]+)=("[^"]*")/gi, (m,com,b,tag,gt,at,val) => {
+    if (com) return `<span class="com">${com}</span>`;
+    if (tag) return `<span class="tag">&lt;${b}${tag}</span>`;
+    if (gt) return `<span class="tag">&gt;</span>`;
+    return `<span class="attr">${at}</span>=<span class="str">${val}</span>`;
+  });
+}
+function corCSS(s){
+  return esc(s).replace(/(\/\*[\s\S]*?\*\/)|^(\s+)([a-z-]+)(?=:)|^([^\s{}][^{}\n]*)(?=\{)|(#[0-9a-f]{3,8}\b)|(-?\b\d+(?:\.\d+)?(?:px|s|deg|%|vh)?\b)/gim,
+    (m,com,esp,prop,sel,hex,num) => {
+      if (com) return `<span class="com">${com}</span>`;
+      if (prop) return `${esp}<span class="prop">${prop}</span>`;
+      if (sel) return `<span class="sel">${sel}</span>`;
+      return `<span class="num-c">${m}</span>`;
+    });
+}
+function corPy(s){
+  return esc(s).replace(/(#.*$)|("[^"\n]*"|'[^'\n]*')|\b(import|from|for|in|if|elif|else|and|or|not|while|True|False)\b|\b([a-z_]+)(?=\()|\b(\d+)\b/gm,
+    (m,com,str,kw,fn,num) => {
+      if (com) return `<span class="com">${com}</span>`;
+      if (str) return `<span class="str">${str}</span>`;
+      if (kw) return `<span class="kw">${kw}</span>`;
+      if (fn) return `<span class="fn">${fn}</span>`;
+      return `<span class="num-c">${num}</span>`;
+    });
+}
+
+/* entrada suave + menu fixo */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visivel'); }), {threshold:.08});
+document.querySelectorAll('.surge').forEach(el => io.observe(el));
+const menu = $('menu');
+new IntersectionObserver(([e]) => menu.classList.toggle('on', !e.isIntersecting)).observe(document.querySelector('.analogia'));
+const links = [...menu.querySelectorAll('a')];
+const secIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle('ativo', a.getAttribute('href') === '#' + e.target.id));
+}), {rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section[id]').forEach(s => secIO.observe(s));
+document.addEventListener('click', e => { if (e.target.closest('.btn,.chip,.cores button,.escolhas button')) vibrar(); });
+
+/* ================= 1. HTML: monte com peças ================= */
+const pecas = [
+  ['🔠','Título','h1','<!-- h1 = título principal, o maior de todos -->\n<h1>Minha página</h1>'],
+  ['¶','Texto','p','<!-- p = parágrafo, um texto comum -->\n<p>Olá! Fiz isso pelo celular.</p>'],
+  ['🔘','Botão','button',`<!-- onclick = o que acontece quando tocam no botão -->\n<button onclick="alert('Oi! 👋')">Me aperta</button>`],
+  ['⌨️','Campo','input','<!-- input = lugar para digitar; placeholder = texto de dica -->\n<input placeholder="Digite algo">'],
+  ['📅','Data','input','<!-- type="date": o celular abre o calendário sozinho -->\n<input type="date">'],
+  ['🎨','Cor','input','<!-- type="color": abre o seletor de cores do celular -->\n<input type="color" value="#e4572e">'],
+  ['🎚️','Slider','input','<!-- type="range": uma barrinha de arrastar -->\n<input type="range">'],
+  ['☑️','Caixinha','input','<!-- checkbox = caixinha de marcar; label = o texto dela -->\n<label><input type="checkbox"> Sei programar</label>'],
+  ['📋','Lista','ul','<!-- ul = lista; cada li é um item -->\n<ul>\n  <li>Pizza</li>\n  <li>Açaí</li>\n</ul>'],
+  ['🎁','Surpresa','details','<!-- details esconde o conteúdo; summary é o que aparece -->\n<details>\n  <summary>Toque para abrir</summary>\n  Você achou o segredo! 🎉\n</details>'],
+  ['🏃','Letreiro','marquee','<!-- marquee = texto andando (coisa antiga da internet!) -->\n<marquee>Texto andando sozinho!</marquee>'],
+  ['🔗','Link','a','<!-- a = link; href = o endereço para onde ele leva -->\n<a href="https://pt.wikipedia.org/wiki/HTML" target="_blank">O que é HTML?</a>']
+];
+const roupaHtml = `body{font-family:system-ui,sans-serif;margin:0;padding:18px;background:linear-gradient(160deg,#fff3c4,#ffd6e8);color:#1d1b17;
+display:flex;flex-direction:column;gap:12px;align-items:flex-start;min-height:100vh}
+h1{margin:0;font-size:30px;color:#e4572e}
+p{margin:0;font-size:17px}
+button{background:#2563eb;color:#fff;border:0;padding:12px 22px;border-radius:12px;font-size:16px;font-weight:700;box-shadow:0 4px 0 #1e3a8a}
+input:not([type]),input[type=date]{padding:10px 12px;border:2px solid #1d1b17;border-radius:10px;font-size:16px;background:#fff}
+input[type=color]{width:60px;height:44px;border:2px solid #1d1b17;border-radius:10px;padding:2px}
+input[type=range]{width:100%;accent-color:#e4572e}
+details{background:#fff;border:2px solid #1d1b17;border-radius:12px;padding:10px 14px;width:100%}
+summary{font-weight:700}
+ul{margin:0;background:#fff;border-radius:12px;padding:10px 30px}
+marquee{width:100%;font-weight:700;color:#16a34a;font-size:20px}
+a{color:#2563eb;font-weight:700}`;
+let pagina = [0,1,2];
+const codigoHtml = $('codigoHtml'), telaHtml = $('telaHtml'), vestirHtml = $('vestirHtml');
+
+pecas.forEach(([ico,nome,tag], i) => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.innerHTML = `${ico} ${nome}<small>&lt;${tag}&gt;</small>`;
+  b.onclick = () => { if (pagina.length < 14) { pagina.push(i); montar(true); } };
+  $('pecas').appendChild(b);
+});
+$('desfazer').onclick = () => { pagina.pop(); montar(); };
+$('limpar').onclick = () => { pagina = []; montar(); };
+vestirHtml.onchange = () => montar();
+
+function montar(rolar){
+  const corpo = pagina.map(i => pecas[i][3]).join('\n');
+  const estilo = vestirHtml.checked ? `<style>${roupaHtml}</style>` : '';
+  const vazio = pagina.length ? '' : '<p style="color:#999;font-family:sans-serif">(página vazia: toque numa peça 👇)</p>';
+  telaHtml.srcdoc = `<!DOCTYPE html><html><head>${VIEWPORT}${estilo}</head><body>${corpo}${vazio}<script>scrollTo(0,document.body.scrollHeight)<\/script></body></html>`;
+  codigoHtml.innerHTML = pagina.length ? corHTML(corpo) : '<span class="com">&lt;!-- nada aqui ainda --&gt;</span>';
+  const linhas = corpo ? corpo.split('\n').length : 0;
+  $('infoHtml').textContent = `minha-pagina.html · ${linhas} linha${linhas===1?'':'s'}`;
+  if (rolar) codigoHtml.scrollTop = codigoHtml.scrollHeight;
+}
+montar();
+
+/* ================= 2a. CSS: temas ================= */
+const cartaoHtml = `<div class="cartao">
+  <div class="foto">😎</div>
+  <h3>Seu Nome</h3>
+  <p>Aprendendo a programar</p>
+  <button>Seguir</button>
+</div>`;
+const centro = `/* body = a página inteira */
+body {
+  margin: 0;            /* tira a borda branca */
+  min-height: 100vh;    /* ocupa a tela toda */
+  display: grid;
+  place-items: center;  /* coloca o cartão no meio */
+}`;
+const temas = [
+  ['🦴 Sem CSS', `/* nenhuma regra: é assim que o
+   navegador mostra HTML puro */`],
+  ['✨ Moderno', `${centro}
+body { background: #eef2f7; font-family: sans-serif; }
+
+/* o ponto (.) mira em quem tem class="cartao" */
+.cartao {
+  background: white;
+  padding: 24px 32px;            /* espaço por dentro */
+  border-radius: 24px;           /* cantos arredondados */
+  text-align: center;
+  box-shadow: 0 12px 30px #0002; /* sombra suave embaixo */
+}
+.foto { font-size: 56px; }       /* emoji grandão */
+h3 { margin: 6px 0 2px; font-size: 22px; }
+p { color: #777; margin: 0 0 14px; }  /* texto cinza */
+button {
+  background: #111; color: white; border: 0;
+  padding: 10px 26px;
+  border-radius: 99px;           /* 99px = formato de pílula */
+  font-size: 15px;
+}`],
+  ['🌃 Neon', `${centro}
+body { background: #0b0221; font-family: monospace; }  /* fundo quase preto */
+.cartao {
+  border: 2px solid #ff2bd6;     /* borda rosa */
+  padding: 22px 30px;
+  text-align: center;
+  color: white;
+  /* o segredo do neon: sombra colorida por fora E por dentro */
+  box-shadow: 0 0 20px #ff2bd6, inset 0 0 20px #ff2bd6;
+}
+.foto { font-size: 50px; filter: drop-shadow(0 0 8px #00f0ff); }
+/* text-shadow faz o texto "brilhar" */
+h3 { color: #00f0ff; text-shadow: 0 0 10px #00f0ff; font-size: 22px; }
+button {                         /* botão só com contorno */
+  background: none; color: #ff2bd6;
+  border: 2px solid #ff2bd6; padding: 8px 22px;
+  font-family: monospace; font-size: 15px;
+}`],
+  ['💾 Anos 90', `${centro}
+/* dá para usar nomes de cor em inglês: teal, yellow, red... */
+body { background: teal; font-family: "Comic Sans MS", cursive; }
+.cartao {
+  background: yellow;
+  border: 6px ridge fuchsia;     /* ridge = borda "em relevo" */
+  padding: 14px 24px;
+  text-align: center;
+}
+.foto { font-size: 50px; }
+h3 { color: red; text-decoration: underline; margin: 4px 0; }  /* sublinhado */
+/* outset = botão "saltado", igual Windows 95 */
+button { background: silver; border: 3px outset white; font-size: 15px; }`],
+  ['📰 Jornal', `${centro}
+body { background: #f4ecd8; font-family: Georgia, serif; }  /* cor de papel velho */
+.cartao {
+  border-top: 5px double black;     /* linha dupla em cima */
+  border-bottom: 5px double black;  /* e embaixo */
+  padding: 14px 10px;
+  text-align: center;
+  width: 240px;
+}
+.foto { font-size: 44px; filter: grayscale(1); }  /* emoji em preto e branco */
+/* uppercase = TUDO MAIÚSCULO; letter-spacing = letras afastadas */
+h3 { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; margin: 4px 0; }
+p { font-style: italic; }  /* itálico */
+button { background: black; color: #f4ecd8; border: 0; padding: 8px 20px; font-family: Georgia; }`],
+  ['🍬 Fofo', `${centro}
+/* gradient = degradê de rosa para azul */
+body { background: linear-gradient(#ffd6e8, #d6e4ff); font-family: sans-serif; }
+.cartao {
+  background: #ffffffaa;         /* branco meio transparente (o "aa") */
+  padding: 22px 32px;
+  border-radius: 40px;
+  border: 3px dashed #ff8fc0;    /* dashed = borda tracejada */
+  text-align: center;
+}
+/* o emoji fica pulando sem parar (infinite) */
+.foto { font-size: 56px; animation: pula 1s infinite; }
+@keyframes pula { 50% { transform: translateY(-10px); } }  /* sobe 10px no meio */
+h3 { color: #ff5fa2; font-size: 22px; margin: 6px 0 2px; }
+p { color: #8a6f9e; }
+button {
+  background: #ff8fc0; color: white; border: 0;
+  padding: 10px 24px; border-radius: 99px; font-size: 16px;
+}`]
+];
+temas.forEach(([nome, css], i) => {
+  const b = document.createElement('button');
+  b.className = 'chip' + (i === 1 ? ' on' : '');
+  b.textContent = nome;
+  b.onclick = () => { $('temas').querySelectorAll('.chip').forEach(x => x.classList.remove('on')); b.classList.add('on'); vestirTema(i); };
+  $('temas').appendChild(b);
+});
+function vestirTema(i){
+  const css = temas[i][1];
+  $('telaTema').srcdoc = `<!DOCTYPE html><html><head>${VIEWPORT}<style>${css}</style></head><body>${cartaoHtml}</body></html>`;
+  $('codigoTema').innerHTML = corCSS(css);
+  $('codigoTema').scrollTop = 0;
+}
+vestirTema(1);
+
+/* ================= 2b. CSS: botão ================= */
+const paleta = ['#e4572e','#2563eb','#16a34a','#ffd23f','#d946ef','#1d1b17'];
+const est = {cor:paleta[0], tam:20, raio:12, sombra:6, giro:0};
+paleta.forEach((c,i) => {
+  const b = document.createElement('button');
+  b.style.background = c; b.setAttribute('aria-label','cor '+c);
+  if (!i) b.classList.add('on');
+  b.onclick = () => { est.cor = c; $('cores').querySelectorAll('button').forEach(x => x.classList.remove('on')); b.classList.add('on'); pintar(); };
+  $('cores').appendChild(b);
+});
+['tam','raio','sombra','giro'].forEach(id => $(id).oninput = e => { est[id] = +e.target.value; pintar(); });
+$('botaoCss').onclick = e => { e.target.textContent = e.target.textContent === 'Me toca!' ? 'Uhul! 🎉' : 'Me toca!'; };
+function pintar(){
+  const b = $('botaoCss'), texto = est.cor === '#ffd23f' ? '#1d1b17' : '#ffffff';
+  Object.assign(b.style, {background:est.cor, color:texto, fontSize:est.tam+'px', borderRadius:est.raio+'px',
+    padding:`${est.tam*.6}px ${est.tam*1.2}px`, boxShadow:`${est.sombra}px ${est.sombra}px 0 #1d1b17`, transform:`rotate(${est.giro}deg)`});
+  $('vTam').textContent = est.tam+'px'; $('vRaio').textContent = est.raio+'px';
+  $('vSombra').textContent = est.sombra+'px'; $('vGiro').textContent = est.giro+'deg';
+  $('codigoCss').innerHTML = corCSS(`/* regras para todo button da página */
+button {
+  background: ${est.cor};   /* cor de fundo */
+  color: ${texto};          /* cor da letra */
+  font-size: ${est.tam}px;            /* tamanho da letra */
+  border-radius: ${est.raio}px;       /* quanto arredonda */
+  /* sombra: direita, baixo, desfoque, cor */
+  box-shadow: ${est.sombra}px ${est.sombra}px 0 black;
+  transform: rotate(${est.giro}deg);  /* inclina */
+}`);
+}
+pintar();
+
+/* ================= 2c. CSS: animações ================= */
+const anims = [
+  ['🦘','Pular',`/* @keyframes = os "quadros" da animação */
+@keyframes pular {
+  /* na metade (50%), sobe 45px */
+  50% { transform: translateY(-45px); }
+}
+/* # mira em quem tem id="astro"
+   0.6s = dura 0,6 segundo; infinite = repete pra sempre */
+#astro { animation: pular 0.6s infinite; }`],
+  ['🌀','Girar',`@keyframes girar {
+  /* "to" = no final: uma volta completa */
+  to { transform: rotate(360deg); }
+}
+/* linear = mesma velocidade o tempo todo */
+#astro { animation: girar 1s linear infinite; }`],
+  ['💓','Pulsar',`@keyframes pulsar {
+  /* scale(1.4) = fica 40% maior */
+  50% { transform: scale(1.4); }
+}
+#astro { animation: pulsar 0.8s infinite; }`],
+  ['🫨','Tremer',`@keyframes tremer {
+  /* vai para a esquerda e para a direita, inclinando */
+  25% { transform: translateX(-8px) rotate(-5deg); }
+  75% { transform: translateX(8px) rotate(5deg); }
+}
+/* bem rápido (0,15s) para parecer tremedeira */
+#astro { animation: tremer 0.15s infinite; }`],
+  ['🌈','Arco-íris',`@keyframes arcoiris {
+  /* hue-rotate gira a cor por todo o arco-íris */
+  to { filter: hue-rotate(360deg); }
+}
+#astro { animation: arcoiris 2s linear infinite; }`],
+  ['🚀','Decolar',`@keyframes decolar {
+  0%   { transform: translateY(0); }       /* começa parado */
+  60%  { transform: translateY(-260px); }  /* sobe e sai da tela */
+  61%  { transform: translateY(260px); }   /* "teleporta" para baixo */
+  100% { transform: translateY(0); }       /* volta ao lugar */
+}
+/* ease-in-out = começa devagar, acelera e freia */
+#astro { animation: decolar 1.6s ease-in-out infinite; }`]
+];
+anims.forEach(([ico,nome,css], i) => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.innerHTML = `${ico} ${nome}`;
+  b.onclick = () => {
+    const ligado = b.classList.contains('on');
+    $('anims').querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+    if (ligado) { $('estiloAnim').textContent = ''; $('codigoAnim').innerHTML = '<span class="com">/* escolha uma animação */</span>'; return; }
+    b.classList.add('on');
+    $('estiloAnim').textContent = css;
+    $('codigoAnim').innerHTML = corCSS(css);
+  };
+  $('anims').appendChild(b);
+});
+$('anims').firstChild.click();
+
+/* ================= 3. Python ================= */
+const pontosAmor = s => [...s.toLowerCase()].reduce((t,c) => t + c.codePointAt(0), 0) % 101;
+const exemplos = {
+  ola: { aba:'👋 Olá', arquivo:'ola.py',
+    campos:[['Seu nome','Maria']],
+    codigo:`# tudo depois do # é comentário: o Python ignora
+
+# input() pergunta e guarda a resposta na "caixinha" nome
+nome = input("Qual seu nome? ")
+
+# print() mostra na tela; o + junta textos
+print("Olá, " + nome + "! Bem-vindo à programação.")
+
+# len() conta quantas letras tem
+print("Seu nome tem", len(nome), "letras.")
+
+# [::-1] lê o texto de trás pra frente
+print("De trás pra frente:", nome[::-1])`,
+    rodar:([n]) => [`Qual seu nome? ${n}`, `Olá, ${n}! Bem-vindo à programação.`, `Seu nome tem ${[...n].length} letras.`, `De trás pra frente: ${[...n].reverse().join('')}`] },
+
+  amor: { aba:'💘 Amor', arquivo:'amor.py',
+    campos:[['Nome 1','Ana'],['Nome 2','Bruno']],
+    codigo:`nome1 = input("Nome 1: ")
+nome2 = input("Nome 2: ")
+
+# junta os dois nomes e deixa tudo minúsculo
+juntos = (nome1 + nome2).lower()
+
+# para o computador, cada letra é um número (ord)
+# somamos tudo e o % 101 deixa o resultado entre 0 e 100
+pontos = sum(ord(letra) for letra in juntos) % 101
+
+print(nome1, "❤️", nome2, "=", pontos, "%")
+
+# if/elif/else = o programa toma uma decisão
+if pontos > 70:
+    print("Casal perfeito! 💘")
+elif pontos > 40:          # elif = "senão, se..."
+    print("Tem chance... 😏")
+else:                      # else = "se nada acima deu certo"
+    print("Melhor ficar na amizade 😂")
+
+# os mesmos nomes sempre dão o mesmo resultado!`,
+    rodar:([a,b]) => { const p = pontosAmor(a+b);
+      return [`Nome 1: ${a}`, `Nome 2: ${b}`, `${a} ❤️ ${b} = ${p} %`, p > 70 ? 'Casal perfeito! 💘' : p > 40 ? 'Tem chance... 😏' : 'Melhor ficar na amizade 😂']; } },
+
+  jokenpo: { aba:'✊ Jokenpô', arquivo:'jokenpo.py',
+    escolhas:[['✊','pedra'],['✋','papel'],['✌️','tesoura']],
+    codigo:`# import traz uma "ferramenta" pronta: aqui, a de sorteio
+import random
+
+# [ ] = uma lista de coisas
+opcoes = ["pedra", "papel", "tesoura"]
+voce = input("Sua jogada: ")
+
+# o computador escolhe uma opção da lista ao acaso
+pc = random.choice(opcoes)
+print("Computador jogou:", pc)
+
+# { } = um "dicionário": quem ganha de quem
+ganha_de = {"pedra": "tesoura", "papel": "pedra", "tesoura": "papel"}
+
+if voce == pc:                 # == pergunta "é igual?"
+    print("Empate! 🤝")
+elif ganha_de[voce] == pc:     # a sua jogada ganha da dele?
+    print("Você ganhou! 🏆")
+else:
+    print("O computador ganhou! 🤖")`,
+    rodar:([v]) => { const o = ['pedra','papel','tesoura'], pc = o[Math.floor(Math.random()*3)], g = {pedra:'tesoura',papel:'pedra',tesoura:'papel'};
+      return [`Sua jogada: ${v}`, `Computador jogou: ${pc}`, v === pc ? 'Empate! 🤝' : g[v] === pc ? 'Você ganhou! 🏆' : 'O computador ganhou! 🤖']; } },
+
+  sorteio: { aba:'🎲 Sorteio', arquivo:'sorteio.py',
+    campos:[['Nomes separados por vírgula','Ana, Bruno, Carla, Diego']],
+    codigo:`import random   # ferramenta de sorteio
+
+# split(",") corta o texto em cada vírgula e vira uma lista
+nomes = input("Nomes: ").split(",")
+
+# escolhe um nome ao acaso; strip() tira os espaços sobrando
+escolhido = random.choice(nomes).strip()
+
+print("Sorteando quem paga o açaí...")
+print("🎉", escolhido, "vai pagar!")`,
+    rodar:([s]) => { const n = s.split(','); return [`Nomes: ${s}`, 'Sorteando quem paga o açaí...', `🎉 ${n[Math.floor(Math.random()*n.length)].trim()} vai pagar!`]; } },
+
+  senha: { aba:'🔐 Senha', arquivo:'senha.py',
+    campos:[['Invente uma senha (não use a sua!)','banana123']],
+    codigo:`senha = input("Senha: ")
+pontos = 0   # começa com zero pontos
+
+# cada regra cumprida soma 1 ponto (+= 1)
+if len(senha) >= 8:                      # tem 8 letras ou mais?
+    pontos += 1
+if any(c.isdigit() for c in senha):      # tem algum número?
+    pontos += 1
+if any(c.isupper() for c in senha):      # tem letra MAIÚSCULA?
+    pontos += 1
+if any(not c.isalnum() for c in senha):  # tem símbolo, tipo ! ou @?
+    pontos += 1
+
+# os pontos (0 a 4) escolhem a posição na lista
+# atenção: no Python a contagem começa no 0!
+niveis = ["Muito fraca 😱", "Fraca 😬", "Média 🙂", "Forte 💪", "Fortíssima 🛡️"]
+print("Sua senha é:", niveis[pontos])`,
+    rodar:([s]) => { const c = [...s]; let p = 0;
+      if (c.length >= 8) p++;
+      if (c.some(x => /\d/.test(x))) p++;
+      if (c.some(x => x !== x.toLowerCase())) p++;
+      if (c.some(x => !/[\p{L}\p{N}]/u.test(x))) p++;
+      return [`Senha: ${s}`, `Sua senha é: ${["Muito fraca 😱","Fraca 😬","Média 🙂","Forte 💪","Fortíssima 🛡️"][p]}`]; } },
+
+  espelho: { aba:'🔁 Espelho', arquivo:'espelho.py',
+    campos:[['Escreva uma frase','A base do teto desaba']],
+    codigo:`frase = input("Frase: ")
+
+# [::-1] = ler de trás pra frente
+print("Ao contrário:", frase[::-1])
+
+# split() separa nos espaços; len() conta os pedaços
+print("Palavras:", len(frase.split()))
+
+# palíndromo = frase que se lê igual nos dois sentidos
+# então tiramos maiúsculas e espaços para comparar
+limpa = frase.lower().replace(" ", "")
+if limpa == limpa[::-1]:
+    print("É um palíndromo! 🤯")
+else:
+    print("Não é palíndromo.")`,
+    rodar:([f]) => { const l = f.toLowerCase().split(' ').join(''), inv = s => [...s].reverse().join('');
+      return [`Frase: ${f}`, `Ao contrário: ${inv(f)}`, `Palavras: ${f.split(/\s+/).filter(Boolean).length}`, l === inv(l) ? 'É um palíndromo! 🤯' : 'Não é palíndromo.']; } },
+
+  natal: { aba:'🎄 Natal', arquivo:'natal.py',
+    codigo:`# ferramenta pronta para lidar com datas
+from datetime import date
+
+hoje = date.today()   # pergunta ao computador que dia é hoje
+natal = date(hoje.year, 12, 25)   # 25/12 deste ano
+
+# se o Natal deste ano já passou, usa o do ano que vem
+if natal < hoje:
+    natal = date(hoje.year + 1, 12, 25)
+
+# subtrair datas dá a distância entre elas
+faltam = (natal - hoje).days
+
+# strftime escreve a data no formato dia/mês/ano
+print("Hoje é", hoje.strftime("%d/%m/%Y"))
+print("Faltam", faltam, "dias para o Natal 🎄")
+print("Ou seja,", faltam * 24, "horas!")   # * = multiplicar`,
+    rodar:() => { const d = new Date(), h = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+      let n = Date.UTC(d.getFullYear(), 11, 25); if (n < h) n = Date.UTC(d.getFullYear()+1, 11, 25);
+      const f = Math.round((n - h) / 864e5), dd = String(d.getDate()).padStart(2,'0'), mm = String(d.getMonth()+1).padStart(2,'0');
+      return [`Hoje é ${dd}/${mm}/${d.getFullYear()}`, `Faltam ${f} dias para o Natal 🎄`, `Ou seja, ${f*24} horas!`]; } },
+
+  tabuada: { aba:'✖️ Tabuada', arquivo:'tabuada.py',
+    campos:[['Tabuada de qual número?','7','numeric']],
+    codigo:`# input() sempre devolve texto; int() transforma em número
+numero = int(input("Número: "))
+
+# for = repetição: faz a mesma coisa várias vezes
+# range(1, 11) conta de 1 até 10 (o 11 fica de fora)
+for i in range(1, 11):
+    # o espaço no começo da linha diz: "isso faz parte do for"
+    print(numero, "x", i, "=", numero * i)`,
+    rodar:([v]) => { if (!/^\s*-?\d+\s*$/.test(v)) return [`Número: ${v}`, {erro:`ValueError: invalid literal for int(): '${v}'`}, '(o Python reclamou: isso não é um número 😅)'];
+      const x = parseInt(v,10); return [`Número: ${x}`, ...Array.from({length:10}, (_,j) => `${x} x ${j+1} = ${x*(j+1)}`)]; } }
+};
+
+let atual = 'ola', digitando = null;
+const term = $('terminal');
+Object.entries(exemplos).forEach(([id, ex]) => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.dataset.ex = id; b.textContent = ex.aba;
+  b.onclick = () => escolher(id);
+  $('abas').appendChild(b);
+});
+
+function escolher(id){
+  atual = id;
+  const ex = exemplos[id];
+  $('abas').querySelectorAll('.chip').forEach(b => b.classList.toggle('on', b.dataset.ex === id));
+  $('nomeArquivo').textContent = ex.arquivo;
+  $('codigoPy').innerHTML = corPy(ex.codigo);
+  const ent = $('entrada'); ent.innerHTML = '';
+  (ex.campos || []).forEach(([rot, padrao, modo], i) => {
+    const l = document.createElement('label');
+    l.innerHTML = `${rot}<input data-i="${i}" autocomplete="off" autocapitalize="off" ${modo ? `inputmode="${modo}"` : ''}>`;
+    l.querySelector('input').value = padrao;
+    l.querySelector('input').addEventListener('keydown', e => { if (e.key === 'Enter') { e.target.blur(); rodar(); } });
+    ent.appendChild(l);
+  });
+  if (ex.escolhas){
+    const g = document.createElement('div'); g.className = 'escolhas';
+    ex.escolhas.forEach(([ico, val]) => {
+      const b = document.createElement('button');
+      b.innerHTML = `${ico}<small>${val}</small>`;
+      b.onclick = () => rodar([val]);
+      g.appendChild(b);
+    });
+    ent.appendChild(g);
+  }
+  $('linhaRodar').style.display = ex.escolhas ? 'none' : '';
+  ent.style.paddingTop = (ex.campos || ex.escolhas) ? '4px' : '0';
+  clearTimeout(digitando);
+  term.innerHTML = ex.escolhas ? '<span class="prompt"># escolha sua jogada acima 👆</span>\n<span class="prompt">$ </span><span class="cursor"></span>'
+                               : '<span class="prompt">$ </span><span class="cursor"></span>';
+}
+
+function rodar(vals){
+  const ex = exemplos[atual];
+  vals = vals || [...$('entrada').querySelectorAll('input')].map((inp, i) => inp.value.trim() || ex.campos[i][1]);
+  const linhas = [`python ${ex.arquivo}`, ...ex.rodar(vals)];
+  clearTimeout(digitando);
+  term.innerHTML = '';
+  let li = 0;
+  (function prox(){
+    if (li >= linhas.length){ term.insertAdjacentHTML('beforeend','<span class="prompt">$ </span><span class="cursor"></span>'); return; }
+    const div = document.createElement('div'), l = linhas[li];
+    if (li === 0) div.innerHTML = '<span class="prompt">$ </span>';
+    if (typeof l === 'object'){ div.className = 'erro'; div.textContent = l.erro; } else div.appendChild(document.createTextNode(l));
+    term.appendChild(div);
+    li++;
+    digitando = setTimeout(prox, li === 1 ? 450 : 150);
+  })();
+}
+$('rodar').onclick = () => rodar();
+escolher('ola');
+
+/* ================= 4. Sua vez ================= */
+const original =
+`<!-- comentários assim não aparecem na tela -->
+<h1>Oi, mundo!</h1>
+<p>Este é meu primeiro site.</p>
+<!-- troque o texto entre as aspas do alert -->
+<button onclick="alert('Funcionou! 🎉')">Clique aqui</button>
+
+<style>
+  /* o CSS fica dentro de <style> */
+  body { font-family: sans-serif; background: #fff3c4; text-align: center; }
+  h1 { color: #e4572e; }   /* troque a cor do título aqui */
+  button { background: #2563eb; color: white; border: none;
+    padding: 12px 20px; border-radius: 10px; font-size: 16px; }
+</style>`;
+const editor = $('editor'), saida = $('saida');
+let t;
+const atualizar = () => { saida.srcdoc = VIEWPORT + editor.value; };
+editor.value = original; atualizar();
+editor.addEventListener('input', () => { clearTimeout(t); t = setTimeout(atualizar, 250); });
+$('resetar').onclick = () => { editor.value = original; atualizar(); };
+
+/* contador de linhas desta página */
+$('contador').textContent = `🤓 Esta página tem ${document.documentElement.outerHTML.split('\n').length} linhas de código.`;
+</script>
+</body>
+</html>
